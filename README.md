@@ -2,7 +2,7 @@
 
 > Real-time cross-server messaging using RabbitMQ, Redis, WebSockets & Dockerized microservices.
 
-XrossTalk is a backend-focused portfolio project designed to showcase inter-service communication, real-time WebSocket handling, and distributed architecture. It features **two backend servers** (Node.js + Express + TypeScript, and Python + Flask), each with its **own MongoDB database** and **WebSocket server**. Communication between these services is enabled using **RabbitMQ** and **Redis Pub/Sub**, demonstrating microservice decoupling in action.
+XrossTalk is a backend-focused portfolio project designed to showcase inter-service communication, real-time WebSocket handling, and distributed architecture. It features **two backend servers** (Node.js + Express + TypeScript, and Python + FastAPI), each with its **own MongoDB database** and **WebSocket server**. Communication between these services is enabled using **RabbitMQ** and **Redis Pub/Sub**, demonstrating microservice decoupling in action.
 
 Frontend is built in **React**, providing a simple UI to test real-time messaging and user presence across services.
 
