@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e1adbda99ed20e33efb9eea5efcff37593dad40dea2f8066c4d4d21877187e1a"
+            "sha256": "371dc3de047e9c7f6236491de3f9709e17cd9b203e74fbdbb8e534843df2b594"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -54,6 +54,7 @@
                 "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44",
                 "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"
             ],
+            "markers": "platform_system == 'Windows'",
             "version": "==0.4.6"
         },
         "dnspython": {
@@ -526,6 +527,8 @@
                 "sha256:16246631db62bdfbf069b0645177d6e8a77ba950cfedbfd093acef9444e4d885",
                 "sha256:35919a9a979d7a59334b6b10e05d77c1d0d574c50e0fc98b8b1a0f165708b55a"
             ],
+            "index": "pypi",
+            "markers": "python_version >= '3.9'",
             "version": "==0.34.3"
         },
         "watchfiles": {
@@ -722,6 +725,7 @@
                 "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44",
                 "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"
             ],
+            "markers": "platform_system == 'Windows'",
             "version": "==0.4.6"
         },
         "flake8": {
