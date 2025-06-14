@@ -1,12 +1,23 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
+import { createServer } from 'http';
+import { setupWebSocket } from './websocket';
 
 const app = express();
-const port = 5000;
+const server = createServer(app);
 
-app.get('/', (req: Request, res: Response) => {
-	res.send('Hello, Express with TypeScript!');
+// Any REST routes can go here
+app.get('/', (_req, res) => {
+	res.send('Hello from Express Server! OP');
 });
 
-app.listen(port, () => {
-	console.log(`Server running at http://localhost:${port}`);
+app.get('/hello', (_req, res) => {
+	res.send({ hello: 'Hello' });
+});
+
+// Setup WebSocket logic
+setupWebSocket(server);
+
+const PORT = process.env.COMET_PORT || 5000;
+server.listen(PORT, () => {
+	console.log(`Server running on http://localhost:${PORT}`);
 });
