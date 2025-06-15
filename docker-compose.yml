@@ -45,6 +45,7 @@ services:
     server-orbit:
         build:
             context: ./apps/server-orbit
+            target: development
         ports:
             - "${ORBIT_PORT}:5001"
         environment:
@@ -56,6 +57,13 @@ services:
         restart: unless-stopped
         networks:
             - xrosstalk-net
+        develop:
+            watch:
+                - path: ./apps/server-orbit/app
+                  action: sync
+                  target: /usr/local/orbit-app/app
+                - path: ./apps/server-orbit/Pipfile
+                  action: rebuild
 
     redis:
         image: redis:7

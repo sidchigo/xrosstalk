@@ -3,8 +3,8 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 
-const WS_COMET_URL = "ws://localhost:5000";
-const WS_ORBIT_URL = "ws://localhost:5001";
+const WS_COMET_URL = "ws://localhost:5000/ws";
+const WS_ORBIT_URL = "ws://localhost:5001/ws";
 
 function App() {
 	const [count, setCount] = useState(0);

@@ -7,7 +7,7 @@ const server = createServer(app);
 
 // Any REST routes can go here
 app.get('/', (_req, res) => {
-	res.send('Hello from Express Server! OP');
+	res.send({ hello: 'world' });
 });
 
 app.get('/hello', (_req, res) => {
