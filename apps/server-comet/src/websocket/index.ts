@@ -1,5 +1,9 @@
 import { Server as HTTPServer, IncomingMessage } from 'http';
+
+import { ChatMessage } from '@/rabbitmq/types/message';
 import { WebSocketServer } from 'ws';
+import { sendMessage } from '@/rabbitmq/publisher';
+import { consumeMessage } from '@/rabbitmq/consumer';
 
 export function setupWebSocket(server: HTTPServer) {
 	const wss = new WebSocketServer({ noServer: true });
@@ -20,6 +24,17 @@ export function setupWebSocket(server: HTTPServer) {
 		ws.on('message', msg => {
 			console.log('[WebSocket] Received:', msg.toString());
 			ws.send(`Echo: ${msg}`);
+
+			const chatMessage: ChatMessage = {
+				type: 'chat',
+				content: msg.toString(),
+				from: 'server-comet',
+				to: 'server-orbit',
+				timestamp: Math.floor(new Date().getTime() / 1000),
+			};
+
+			// send to RabbitMQ
+			sendMessage('messages', chatMessage);
 		});
 	});
 }

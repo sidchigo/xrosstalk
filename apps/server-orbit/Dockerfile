@@ -37,6 +37,8 @@ COPY app ./app
 ENV PORT=5001
 EXPOSE 5001
 
+ENV PYTHONUNBUFFERED=1
+
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "5001", "--reload"]
 
 # --- Final image ---

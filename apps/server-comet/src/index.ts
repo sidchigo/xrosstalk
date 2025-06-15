@@ -1,9 +1,13 @@
+import 'module-alias/register';
 import express from 'express';
 import { createServer } from 'http';
-import { setupWebSocket } from './websocket';
+import { setupWebSocket } from '@/websocket';
+import { consumeMessage } from '@/rabbitmq/consumer';
 
 const app = express();
 const server = createServer(app);
+
+consumeMessage('messages').catch(console.error);
 
 // Any REST routes can go here
 app.get('/', (_req, res) => {
