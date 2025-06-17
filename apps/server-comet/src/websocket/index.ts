@@ -3,7 +3,6 @@ import { Server as HTTPServer, IncomingMessage } from 'http';
 import { ChatMessage } from '@/rabbitmq/types/message';
 import { WebSocketServer } from 'ws';
 import { sendMessage } from '@/rabbitmq/publisher';
-import { consumeMessage } from '@/rabbitmq/consumer';
 
 export function setupWebSocket(server: HTTPServer) {
 	const wss = new WebSocketServer({ noServer: true });
@@ -34,7 +33,7 @@ export function setupWebSocket(server: HTTPServer) {
 			};
 
 			// send to RabbitMQ
-			sendMessage('messages', chatMessage);
+			sendMessage(chatMessage);
 		});
 	});
 }

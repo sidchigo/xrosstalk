@@ -12,15 +12,19 @@ def handle_message(
     try:
         data = json.loads(body.decode("utf-8"))
         print(" [x] Orbit Received:", data)
-        # Do something useful here...
     except Exception as e:
         print(" [!] Error:", e)
     finally:
         ch.basic_ack(delivery_tag=method.delivery_tag)
 
-def consume_message(queue_name: str) -> None:
-    channel = setup_queue()
-    channel.basic_qos(prefetch_count=1)
+def consume_message() -> None:
+    channel = setup_queue()[1]
+    result = channel.queue_declare(queue='', exclusive=True) # type: ignore
+    queue_name = result.method.queue # type: ignore
+    channel.queue_bind(exchange='chat', queue=queue_name) # type: ignore
     channel.basic_consume(queue=queue_name, on_message_callback=handle_message)  # type: ignore
     print(" [*] Waiting for messages. To exit press CTRL+C")
-    channel.start_consuming()
+    try:
+        channel.start_consuming()
+    except:
+        print("Issue while sending to exchange")

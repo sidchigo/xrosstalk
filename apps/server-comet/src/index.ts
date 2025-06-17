@@ -7,7 +7,7 @@ import { consumeMessage } from '@/rabbitmq/consumer';
 const app = express();
 const server = createServer(app);
 
-consumeMessage('messages').catch(console.error);
+consumeMessage().catch(console.error);
 
 // Any REST routes can go here
 app.get('/', (_req, res) => {

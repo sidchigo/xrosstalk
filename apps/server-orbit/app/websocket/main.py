@@ -22,6 +22,6 @@ async def websocket_endpoint(websocket: WebSocket):
                 content=data,
                 timestamp=int(time.time())
             )
-            send_message("messages", chat_msg)
+            send_message(chat_msg)
     except WebSocketDisconnect:
         print("WebSocket client disconnected")

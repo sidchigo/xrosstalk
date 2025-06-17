@@ -15,6 +15,5 @@ export async function getConnection(): Promise<ChannelModel> {
 export async function setupQueue(queueName = QUEUE): Promise<Channel> {
 	const conn = (await getConnection()) as ChannelModel;
 	const channel = await conn.createChannel();
-	await channel.assertQueue(queueName, { durable: false });
 	return channel;
 }

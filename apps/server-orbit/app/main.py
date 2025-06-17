@@ -6,7 +6,7 @@ from app.rabbitmq.consumer import consume_message
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    thread = threading.Thread(target=consume_message, args=("messages",), daemon=True)
+    thread = threading.Thread(target=consume_message, daemon=True)
     thread.start()
     yield
 
