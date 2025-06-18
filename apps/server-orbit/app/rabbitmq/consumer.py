@@ -2,6 +2,7 @@ import json
 from pika.adapters.blocking_connection import BlockingChannel
 from pika.spec import Basic, BasicProperties
 from .config import setup_queue
+from .shared import message_queue
 
 def handle_message(
     ch: BlockingChannel,
@@ -12,6 +13,9 @@ def handle_message(
     try:
         data = json.loads(body.decode("utf-8"))
         print(" [x] Orbit Received:", data)
+        
+        # put msg in queue so that WS can process it
+        message_queue.put(data)
     except Exception as e:
         print(" [!] Error:", e)
     finally:

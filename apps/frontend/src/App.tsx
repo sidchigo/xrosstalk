@@ -3,46 +3,50 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 
-const WS_COMET_URL = "ws://localhost:5000/ws";
 const WS_ORBIT_URL = "ws://localhost:5001/ws";
 
+type Flags = {
+	enableDarkMode?: boolean;
+};
+
 function App() {
-	const [count, setCount] = useState(0);
-	const [messageComet, setOrbitMessage] = useState("");
-	const [messageOrbit, setCometMessage] = useState("");
+	const [isDarkMode, isDarkModeSet] = useState(false);
+	const [messageOrbit, setOrbitMessage] = useState("");
+	const [flags, setFlags] = useState<Flags>({});
 	const [socket, setSocket] = useState<{
-		wsComet: WebSocket;
 		wsOrbit: WebSocket;
 	}>();
 
 	useEffect(() => {
-		const wsComet = new WebSocket(WS_COMET_URL);
 		const wsOrbit = new WebSocket(WS_ORBIT_URL);
-		setSocket({ wsComet, wsOrbit });
+		setSocket({ wsOrbit });
 
-		wsComet.onopen = () => console.log("WebSocket connected");
-		wsComet.onclose = () => console.log("WebSocket disconnected");
-		wsComet.onmessage = (event) => {
-			setOrbitMessage(event.data);
-		};
-
-		wsOrbit.onopen = () => console.log("WebSocket connected");
+		wsOrbit.onopen = () => wsOrbit.send("WebSocket connected");
 		wsOrbit.onclose = () => console.log("WebSocket disconnected");
 		wsOrbit.onmessage = (event) => {
-			setCometMessage(event.data);
+			const content = JSON.parse(JSON.parse(event.data).content);
+			const { type, payload } = content;
+			if (type === "feature_flag_update") {
+				setFlags((prev) => ({
+					...prev,
+					[payload.key]: payload.enabled,
+				}));
+				setOrbitMessage(
+					`${payload.key} is ${
+						payload.enabled ? "enabled" : "disabled"
+					}`
+				);
+			}
 		};
 
 		return () => {
-			wsComet.close();
 			wsOrbit.close();
 		};
 	}, []);
 
-	const sendMessageComet = () => {
-		if (socket?.wsComet) {
-			socket.wsComet.send("Hello from React!");
-		}
-	};
+	useEffect(() => {
+		document.documentElement.classList.toggle("dark-theme", isDarkMode);
+	}, [isDarkMode]);
 
 	const sendMessageOrbit = () => {
 		if (socket?.wsOrbit) {
@@ -51,7 +55,7 @@ function App() {
 	};
 
 	return (
-		<>
+		<div>
 			<div>
 				<a href="https://vite.dev" target="_blank">
 					<img src={viteLogo} className="logo" alt="Vite logo" />
@@ -64,31 +68,21 @@ function App() {
 					/>
 				</a>
 			</div>
-			<h1>Vite + React</h1>
+			<h1>Client</h1>
 			<div className="card">
-				<p>
-					<p>Received message from server-comet: {messageComet}</p>
-					<button onClick={sendMessageComet}>
-						Send Message to server-comet
-					</button>
-				</p>
 				<p>
 					<p>Received message from server-orbit: {messageOrbit}</p>
 					<button onClick={sendMessageOrbit}>
 						Send Message to server-orbit
 					</button>
 				</p>
-				<button onClick={() => setCount((count) => count + 1)}>
-					count is {count}
-				</button>
-				<p>
-					Edit <code>src/App.tsx</code> and save to test HMR
-				</p>
+				{flags.enableDarkMode && (
+					<button onClick={() => isDarkModeSet((mode) => !mode)}>
+						Dark mode
+					</button>
+				)}
 			</div>
-			<p className="read-the-docs">
-				Click on the Vite and React logos to learn more
-			</p>
-		</>
+		</div>
 	);
 }
 
