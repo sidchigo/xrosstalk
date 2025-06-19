@@ -26,6 +26,7 @@ function App() {
 		wsOrbit.onmessage = (event) => {
 			const content = JSON.parse(JSON.parse(event.data).content);
 			const { type, payload } = content;
+			console.log(type, payload);
 			if (type === "feature_flag_update") {
 				setFlags((prev) => ({
 					...prev,
@@ -45,7 +46,7 @@ function App() {
 	}, []);
 
 	useEffect(() => {
-		document.documentElement.classList.toggle("dark-theme", isDarkMode);
+		document.documentElement.classList.toggle("dark-theme", !isDarkMode);
 	}, [isDarkMode]);
 
 	const sendMessageOrbit = () => {
