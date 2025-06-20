@@ -8,6 +8,7 @@ fastapi = {extras = ["standard"], version = "*"}
 uvicorn = "*"
 websockets = "*"
 pika = "*"
+redis = "*"
 
 [dev-packages]
 black = "*"

@@ -4,19 +4,42 @@ import json
 from typing import List
 from fastapi import WebSocket, APIRouter
 from starlette.websockets import WebSocketDisconnect
-from app.rabbitmq.schemas import ChatMessage
+from app.rabbitmq.schemas import ChatMessage, PresenceMessage, PresencePayload
 from app.rabbitmq.publisher import send_message
 from app.rabbitmq.shared import message_queue
+from app.redis.client import mark_user_online, mark_user_offline
 from queue import Empty
+from typing import Literal
 
 router = APIRouter()
 active_connections: List[WebSocket] = []
 
-@router.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
+async def broadcast_presence_update(user_id: str, status: Literal["online", "offline"]):
+    data = PresenceMessage(
+        type="presence_update",
+        payload=PresencePayload(
+            user_id=user_id,
+            status=status,
+            timestamp=int(time.time() * 1000)
+        )
+    )
+    message = ChatMessage(
+        type="chat",
+        from_="server-orbit",
+        to="server-comet",
+        content=json.dumps(data.model_dump()),
+        timestamp=int(time.time())
+    )
+    send_message(message)
+
+@router.websocket("/ws/{user_id}")
+async def websocket_endpoint(websocket: WebSocket, user_id: str):
     await websocket.accept()
     active_connections.append(websocket)
-    print(active_connections)
+    
+    # mark user as online
+    await mark_user_online(user_id)
+    await broadcast_presence_update(user_id, "online")
 
     print("[WebSocket] Client connected")
     try:
@@ -50,3 +73,5 @@ async def websocket_endpoint(websocket: WebSocket):
     except WebSocketDisconnect:
         print("WebSocket client disconnected")
         active_connections.remove(websocket)
+        await mark_user_offline(user_id)
+        await broadcast_presence_update(user_id, "offline")

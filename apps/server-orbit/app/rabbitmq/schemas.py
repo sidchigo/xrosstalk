@@ -10,3 +10,13 @@ class ChatMessage(BaseModel):
 
     class Config:
         fields = {"from_": "from"}
+
+
+class PresencePayload(BaseModel):
+    user_id: str
+    status: Literal["online", "offline"]
+    timestamp: int
+
+class PresenceMessage(BaseModel):
+    type: Literal["presence_update"]
+    payload: PresencePayload

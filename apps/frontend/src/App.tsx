@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import { useParams } from "react-router";
 
 const WS_ORBIT_URL = "ws://localhost:5001/ws";
 
@@ -11,15 +12,16 @@ type Flags = {
 
 function App() {
 	const [isDarkMode, isDarkModeSet] = useState(false);
-	const [messageOrbit, setOrbitMessage] = useState("");
-	const [flags, setFlags] = useState<Flags>({});
-	const [socket, setSocket] = useState<{
+	const [messageOrbit, orbitMessageSet] = useState("");
+	const [flags, flagsSet] = useState<Flags>({});
+	const { user } = useParams();
+	const [socket, socketSet] = useState<{
 		wsOrbit: WebSocket;
 	}>();
 
 	useEffect(() => {
-		const wsOrbit = new WebSocket(WS_ORBIT_URL);
-		setSocket({ wsOrbit });
+		const wsOrbit = new WebSocket(`${WS_ORBIT_URL}/${user}`);
+		socketSet({ wsOrbit });
 
 		wsOrbit.onopen = () => wsOrbit.send("WebSocket connected");
 		wsOrbit.onclose = () => console.log("WebSocket disconnected");
@@ -28,11 +30,11 @@ function App() {
 			const { type, payload } = content;
 			console.log(type, payload);
 			if (type === "feature_flag_update") {
-				setFlags((prev) => ({
+				flagsSet((prev) => ({
 					...prev,
 					[payload.key]: payload.enabled,
 				}));
-				setOrbitMessage(
+				orbitMessageSet(
 					`${payload.key} is ${
 						payload.enabled ? "enabled" : "disabled"
 					}`
