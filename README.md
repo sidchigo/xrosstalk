@@ -1,45 +1,51 @@
 # 🔀 XrossTalk
 
-> Real-time cross-server messaging using RabbitMQ, Redis, WebSockets & Dockerized microservices.
+> Real-time feature flag control & user presence dashboard using RabbitMQ, Redis, WebSockets, and Dockerized microservices.
 
-XrossTalk is a backend-focused portfolio project designed to showcase inter-service communication, real-time WebSocket handling, and distributed architecture. It features **two backend servers** (Node.js + Express + TypeScript, and Python + FastAPI), each with its **own MongoDB database** and **WebSocket server**. Communication between these services is enabled using **RabbitMQ** and **Redis Pub/Sub**, demonstrating microservice decoupling in action.
-
-Frontend is built in **React**, providing a simple UI to test real-time messaging and user presence across services.
-
----
+**XrossTalk** is a backend-centric portfolio project that demonstrates real-time communication, presence tracking, and feature flag broadcasting using microservice architecture. It features two backend servers communicating over **RabbitMQ**, with **Redis** for presence tracking and **WebSockets** for live client-server communication. A **React-based frontend** (using **ShadCN UI**) serves as both an admin dashboard and a client interface.
 
 ## 📦 Tech Stack
 
-| Layer        | Tech                                                |
-| ------------ | --------------------------------------------------- |
-| Server-Comet | Node.js + Express + TypeScript + WebSocket          |
-| Server-Orbit | Python + FastAPI                                    |
-| Messaging    | RabbitMQ (message queuing), Redis (Pub/Sub)         |
-| Databases    | MongoDB (per service)                               |
-| Frontend     | React (Vite or Next.js)                             |
-| Infra        | Docker, Docker Compose                              |
-| Architecture | Monorepo, Microservices, WebSockets, Message Broker |
+| Layer        | Tech                                       |
+| ------------ | ------------------------------------------ |
+| Server-Comet | Node.js + Express + TypeScript + WebSocket |
+| Server-Orbit | Python + FastAPI                           |
+| Messaging    | RabbitMQ (message queuing)                 |
+| Presence     | Redis (user tracking and activity logs)    |
+| Frontend     | React, Vite + TailwindCSS + ShadCN UI      |
+| Infra        | Docker, Docker Compose                     |
 
----
+## 🎯 Key Features
+
+-   🧑‍💻 **Admin dashboard** to toggle feature flags in real time
+-   🟢 **Live presence tracking** of connected users
+-   📋 **Activity logs** showing user connection history and status updates
+-   🔄 **Cross-server message handling** using RabbitMQ
+-   📡 **WebSocket-based real-time UI updates**
+-   🔐 **Redis-based presence system** with per-user tracking
+-   🎨 **Modern UI** built using ShadCN + Tailwind CSS
+-   🧪 Fully **Dockerized** for local or cloud deployment
 
 ## 🧩 Architecture Overview
 
--   Each server is a standalone microservice (API + WebSocket + MongoDB)
--   Redis is used for **presence broadcasting** across services
--   RabbitMQ handles **message delivery queues**
--   Docker Compose runs all services locally in a single orchestrated network
--   WebSocket clients (in frontend) connect to their respective backend server
--   Users can see all active users (merged via Redis) and chat with anyone (messages routed via RabbitMQ)
-
-## 🧱 Tech Stack
-
--   **Frontend:** React + NGINX (served statically)
--   **Server A (Orbit):** FastAPI + WebSocket + Uvicorn + PostgreSQL
--   **Server B (Comet):** Express.js (TypeScript) + WebSocket + PostgreSQL
--   **Broker:** RabbitMQ
--   **Infra:** Docker, Docker Compose
--   **CI/CD:** (Planned)
--   **Monorepo Structure:** Ready for Turborepo/Lerna in future
+```txt
+                        ┌────────────┐
+                        │  Admin UI  │
+                        └─────┬──────┘
+                              │ WebSocket
+                        ┌─────▼─────┐
+                        │ Server A  │  ◄──── Feature flag control + logs
+                        └─────┬─────┘
+        RabbitMQ ◄────┐       │       ┌─────► Redis
+                      │       ▼       │
+                 ┌────┴─────┐   ┌─────┴─────┐
+                 │ Server B │   │  Clients  │
+                 └──────────┘   └───────────┘
+                      ▲
+                      │ WebSocket
+                      ▼
+              Client UI (uses flag if enabled)
+```
 
 ## 📦 Monorepo Structure
 
@@ -81,12 +87,31 @@ cp .env.example .env
 docker compose up --build
 ```
 
-## Access the services via:
+## 🔍 Accessing the Services
 
 http://localhost:3000 → Frontend
 
-http://localhost:5000 → Express server (will later serve socket events)
+http://localhost:5000 → Express server
 
-http://localhost:5001/docs → FastAPI docs
+http://localhost:5001 → FastAPI server
 
-http://localhost:5001 → FastAPI server (will later serve socket events)
+## 🧪 Demo Use Case
+
+Imagine a live rollout scenario:
+Admin toggles a feature, all online users instantly get the new flag. Only when enabled, users can access the new feature. Presence and activity logs update in real time.
+
+## 🏁 Deployment Plans
+
+🚀 Deploy on Oracle Cloud Free Tier VPS
+
+🌐 Attach a free .tk domain via Freenom + Cloudflare
+
+🔒 Use NGINX + Certbot for HTTPS
+
+🐳 Full deployment via docker-compose (no manual steps)
+
+## 📬 Contact
+
+Open to full-time remote opportunities
+
+Reach me via [LinkedIn](https://www.linkedin.com/in/siddheshnaik26/) or [Email](mailto://sid.naik26@gmail.com)
