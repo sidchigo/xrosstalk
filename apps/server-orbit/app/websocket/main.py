@@ -61,10 +61,10 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
                     type="chat",
                     from_="server-orbit",
                     to="server-comet",
-                    content=json.dumps(data),
+                    content=data,
                     timestamp=int(time.time())
                 )
-                content = json.dumps({ "type": "notification", "payload": data })
+                content = { "type": "notification", "payload": data }
                 for client in active_connections:
                     await client.send_text(json.dumps({ "type": "chat", "content": content }))
                 send_message(chat_msg)

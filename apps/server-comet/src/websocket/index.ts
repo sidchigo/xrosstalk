@@ -26,7 +26,6 @@ export function setupWebSocket(server: HTTPServer) {
 
 		ws.on('message', msg => {
 			console.log('[WebSocket] Received:', msg.toString());
-			ws.send(`Echo: ${msg}`);
 
 			const chatMessage: ChatMessage = {
 				type: 'chat',
@@ -35,6 +34,8 @@ export function setupWebSocket(server: HTTPServer) {
 				to: 'server-orbit',
 				timestamp: Math.floor(new Date().getTime() / 1000),
 			};
+
+			ws.send(JSON.stringify(chatMessage));
 
 			// send to RabbitMQ
 			sendMessage(chatMessage);
