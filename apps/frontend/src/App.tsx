@@ -3,6 +3,8 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import { useParams } from "react-router";
+import { ModeToggle } from "./components/mode-toggle";
+import { Button } from "./components/ui/button";
 
 const WS_ORBIT_URL = "ws://localhost:5001/ws";
 
@@ -11,7 +13,6 @@ type Flags = {
 };
 
 function App() {
-	const [isDarkMode, isDarkModeSet] = useState(false);
 	const [messageOrbit, orbitMessageSet] = useState("");
 	const [flags, flagsSet] = useState<Flags>({});
 	const { user } = useParams();
@@ -47,9 +48,9 @@ function App() {
 		};
 	}, []);
 
-	useEffect(() => {
-		document.documentElement.classList.toggle("dark-theme", !isDarkMode);
-	}, [isDarkMode]);
+	// useEffect(() => {
+	// 	document.documentElement.classList.toggle("dark-theme", !isDarkMode);
+	// }, [isDarkMode]);
 
 	const sendMessageOrbit = () => {
 		if (socket?.wsOrbit) {
@@ -58,33 +59,24 @@ function App() {
 	};
 
 	return (
-		<div>
-			<div>
-				<a href="https://vite.dev" target="_blank">
-					<img src={viteLogo} className="logo" alt="Vite logo" />
-				</a>
-				<a href="https://react.dev" target="_blank">
-					<img
-						src={reactLogo}
-						className="logo react"
-						alt="React logo"
-					/>
-				</a>
-			</div>
-			<h1>Client</h1>
-			<div className="card">
-				<p>
-					<p>Received message from server-orbit: {messageOrbit}</p>
-					<button onClick={sendMessageOrbit}>
-						Send Message to server-orbit
-					</button>
-				</p>
-				{flags.enableDarkMode && (
-					<button onClick={() => isDarkModeSet((mode) => !mode)}>
-						Dark mode
-					</button>
-				)}
-			</div>
+		<div className="flex flex-col gap-5 min-h-svh w-full items-center justify-center p-6 md:p-10">
+			<h1 className="scroll-m-20 text-center text-4xl font-extrabold tracking-tight text-balance">
+				Client
+			</h1>
+
+			<h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+				Received message from server-orbit
+			</h2>
+			{messageOrbit && (
+				<code className="bg-muted justify-start relative rounded px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
+					{messageOrbit}
+				</code>
+			)}
+			<Button onClick={sendMessageOrbit}>
+				Send Message to server-orbit
+			</Button>
+
+			{flags.enableDarkMode && <ModeToggle />}
 		</div>
 	);
 }
