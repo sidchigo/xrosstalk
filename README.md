@@ -112,6 +112,6 @@ Admin toggles a feature, all online users instantly get the new flag. Only when 
 
 ## 📬 Contact
 
-Open to full-time remote opportunities
+Open to select new opportunities if the right one comes along.
 
 Reach me via [LinkedIn](https://www.linkedin.com/in/siddheshnaik26/) or [Email](mailto://sid.naik26@gmail.com)
