@@ -95,7 +95,7 @@ http://localhost:5000 → Express server
 
 http://localhost:5001 → FastAPI server
 
-## 🧪 Demo Use Case
+## 🧪 Example Use Case
 
 Imagine a live rollout scenario:
 Admin toggles a feature, all online users instantly get the new flag. Only when enabled, users can access the new feature. Presence and activity logs update in real time.
