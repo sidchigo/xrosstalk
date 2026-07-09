@@ -71,7 +71,7 @@ xrosstalk/
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/your-username/xrosstalk.git
+git clone https://github.com/sidchigo/xrosstalk.git
 cd xrosstalk
 ```
 
