@@ -40,8 +40,8 @@ RUN rm -rf /usr/share/nginx/html/*
 # Copy built app to nginx's public directory
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# (Optional) Copy custom nginx config if you have one
-# COPY nginx.conf /etc/nginx/nginx.conf
+# Copy custom nginx config for SPA client-side routing
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
