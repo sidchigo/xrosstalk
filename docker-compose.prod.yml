@@ -1,0 +1,74 @@
+services:
+    frontend:
+        build:
+            context: ./apps/frontend
+            target: production
+        ports:
+            - "3000:80"
+        depends_on:
+            - server-comet
+            - server-orbit
+        restart: unless-stopped
+        networks:
+            - xrosstalk-net
+
+    server-comet:
+        build:
+            context: ./apps/server-comet
+            target: production
+        ports:
+            - "${COMET_PORT:-5000}:5000"
+        environment:
+            - REDIS_HOST=redis
+            - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+        depends_on:
+            - redis
+            - rabbitmq
+        restart: unless-stopped
+        networks:
+            - xrosstalk-net
+
+    server-orbit:
+        build:
+            context: ./apps/server-orbit
+            target: production
+        ports:
+            - "${ORBIT_PORT:-5001}:5001"
+        environment:
+            - REDIS_HOST=redis
+            - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+        depends_on:
+            - redis
+            - rabbitmq
+        restart: unless-stopped
+        networks:
+            - xrosstalk-net
+
+    redis:
+        image: redis:7
+        ports:
+            - "${REDIS_PORT:-6379}:6379"
+        volumes:
+            - redis-data:/data
+        restart: unless-stopped
+        networks:
+            - xrosstalk-net
+
+    rabbitmq:
+        image: rabbitmq:4.1.1-management-alpine
+        ports:
+            - "${RABBITMQ_PORT:-5672}:5672"
+            - "15672:15672"
+        volumes:
+            - rabbitmq-data:/var/lib/rabbitmq
+        restart: unless-stopped
+        networks:
+            - xrosstalk-net
+
+volumes:
+    redis-data:
+    rabbitmq-data:
+
+networks:
+    xrosstalk-net:
+        driver: bridge
