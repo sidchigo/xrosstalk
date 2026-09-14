@@ -23,6 +23,7 @@ def handle_message(
 
 def consume_message() -> None:
     channel = setup_queue()[1]
+    channel.exchange_declare(exchange='chat', exchange_type='fanout', durable=False) # type: ignore
     result = channel.queue_declare(queue='', exclusive=True) # type: ignore
     queue_name = result.method.queue # type: ignore
     channel.queue_bind(exchange='chat', queue=queue_name) # type: ignore
