@@ -8,7 +8,14 @@ import { Button } from "./components/ui/button";
 import React from "react";
 import { logTimestamp } from "./lib/utils";
 
-const WS_COMET_URL = "ws://localhost:5000/ws";
+const getWsCometUrl = () => {
+	if (import.meta.env.VITE_WS_COMET_URL) {
+		return import.meta.env.VITE_WS_COMET_URL;
+	}
+	const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+	const host = window.location.host;
+	return `${protocol}//${host}/comet/ws`;
+};
 
 function Admin() {
 	const [enableDarkMode, enableDarkModeSet] = useState(true);
@@ -21,7 +28,7 @@ function Admin() {
 	);
 
 	useEffect(() => {
-		const wsComet = new WebSocket(WS_COMET_URL);
+		const wsComet = new WebSocket(getWsCometUrl());
 		setSocket({ wsComet });
 
 		wsComet.onopen = () => console.log("WebSocket connected");

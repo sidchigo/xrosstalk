@@ -3,7 +3,14 @@ import "./App.css";
 import { useParams } from "react-router";
 import { ModeToggle } from "./components/mode-toggle";
 
-const WS_ORBIT_URL = "ws://localhost:5001/ws";
+const getWsOrbitUrl = () => {
+	if (import.meta.env.VITE_WS_ORBIT_URL) {
+		return import.meta.env.VITE_WS_ORBIT_URL;
+	}
+	const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+	const host = window.location.host;
+	return `${protocol}//${host}/orbit/ws`;
+};
 
 type Flags = {
 	darkMode?: boolean;
@@ -18,7 +25,7 @@ function App() {
 	}>();
 
 	useEffect(() => {
-		const wsOrbit = new WebSocket(`${WS_ORBIT_URL}/${user}`);
+		const wsOrbit = new WebSocket(`${getWsOrbitUrl()}/${user}`);
 		socketSet({ wsOrbit });
 
 		const message = {
