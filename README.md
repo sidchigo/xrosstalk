@@ -2,7 +2,7 @@
 
 > Real-time feature flag control & user presence dashboard using RabbitMQ, Redis, WebSockets, and Dockerized microservices.
 
-**XrossTalk** is a backend-centric portfolio project that demonstrates real-time communication, presence tracking, and feature flag broadcasting using microservice architecture. It features two backend servers communicating over **RabbitMQ**, with **Redis** for presence tracking and **WebSockets** for live client-server communication. A **React-based frontend** (using **ShadCN UI**) serves as both an admin dashboard and a client interface.
+**XrossTalk** is a reference implementation of the event-driven, real-time architecture patterns I use in production — a backend-centric project demonstrating microservice communication, presence tracking, and feature-flag broadcasting via **RabbitMQ**, **Redis**, and **WebSockets**.
 
 ## 📦 Tech Stack
 
@@ -71,7 +71,7 @@ xrosstalk/
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/your-username/xrosstalk.git
+git clone https://github.com/sidchigo/xrosstalk.git
 cd xrosstalk
 ```
 
@@ -95,7 +95,7 @@ http://localhost:5000 → Express server
 
 http://localhost:5001 → FastAPI server
 
-## 🧪 Demo Use Case
+## 🧪 Example Use Case
 
 Imagine a live rollout scenario:
 Admin toggles a feature, all online users instantly get the new flag. Only when enabled, users can access the new feature. Presence and activity logs update in real time.
@@ -112,6 +112,6 @@ Admin toggles a feature, all online users instantly get the new flag. Only when 
 
 ## 📬 Contact
 
-Open to full-time remote opportunities
+Open to Senior Software Engineer opportunities in real-time systems / fintech.
 
 Reach me via [LinkedIn](https://www.linkedin.com/in/siddheshnaik26/) or [Email](mailto://sid.naik26@gmail.com)
