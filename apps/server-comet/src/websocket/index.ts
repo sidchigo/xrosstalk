@@ -1,8 +1,8 @@
 import { Server as HTTPServer, IncomingMessage } from 'http';
 
-import { ChatMessage } from '@/rabbitmq/types/message';
+import { ChatMessage } from '../rabbitmq/types/message';
 import { WebSocketServer, WebSocket } from 'ws';
-import { sendMessage } from '@/rabbitmq/publisher';
+import { sendMessage } from '../rabbitmq/publisher';
 
 export const wsClients = new Set<WebSocket>();
 

@@ -22,8 +22,10 @@ services:
             - REDIS_HOST=redis
             - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
         depends_on:
-            - redis
-            - rabbitmq
+            redis:
+                condition: service_started
+            rabbitmq:
+                condition: service_healthy
         restart: unless-stopped
         networks:
             - xrosstalk-net
@@ -38,8 +40,10 @@ services:
             - REDIS_HOST=redis
             - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
         depends_on:
-            - redis
-            - rabbitmq
+            redis:
+                condition: service_started
+            rabbitmq:
+                condition: service_healthy
         restart: unless-stopped
         networks:
             - xrosstalk-net
@@ -61,6 +65,11 @@ services:
             - "15672:15672"
         volumes:
             - rabbitmq-data:/var/lib/rabbitmq
+        healthcheck:
+            test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+            interval: 5s
+            timeout: 5s
+            retries: 5
         restart: unless-stopped
         networks:
             - xrosstalk-net

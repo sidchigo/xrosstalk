@@ -1,8 +1,8 @@
 import 'module-alias/register';
 import express from 'express';
 import { createServer } from 'http';
-import { setupWebSocket } from '@/websocket';
-import { consumeMessage } from '@/rabbitmq/consumer';
+import { setupWebSocket } from './websocket';
+import { consumeMessage } from './rabbitmq/consumer';
 
 const app = express();
 const server = createServer(app);
